@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="image/favicon.png">
+    <title>Gestão de Horas e Demandas - Relatórios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Estilo para a animação de "fade-in" */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="min-h-screen flex flex-col">
+        <header class="bg-white shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <div class="flex items-center">
+                        <div class="p-2 rounded-lg mr-3">
+                            <img src="image/favicon.png" alt="Ícone Gestão de Horas" class="w-5 h-5">
+                        </div>
+                        <h1 class="text-xl font-semibold text-gray-900">Gestão de Horas e Demandas</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button onclick="window.location.href='dashboard.html'"
+                            class="p-2 rounded-full hover:bg-gray-100" title="Dashboard">
+                            <i data-feather="home" class="text-gray-500 w-5 h-5"></i>
+                        </button>
+                        <button class="p-2 rounded-full hover:bg-gray-100">
+                            <i data-feather="bell" class="text-gray-500 w-5 h-5"></i>
+                        </button>
+                        <div class="relative">
+                            <button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <i data-feather="user" class="text-blue-600 w-4 h-4"></i>
+                                </div>
+                                <span class="text-sm font-medium text-gray-700 user-name">Usuário</span>
+                            </button>
+                            <div id="userMenu"
+                                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                                <a href="profile.html"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configurações</a>
+                                <a href="reports.html"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Relatórios</a>
+                                <a href="#" id="signOutLink"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+                <div class="flex justify-between items-center mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900">Relatório Mensal</h1>
+                    <div class="flex items-center space-x-2">
+                        <button id="prevMonthBtn" class="p-2 rounded-full hover:bg-gray-200">
+                            <i data-feather="chevron-left" class="w-5 h-5"></i>
+                        </button>
+                        <span id="monthDisplay" class="font-semibold text-lg w-40 text-center">Carregando...</span>
+                        <button id="nextMonthBtn" class="p-2 rounded-full hover:bg-gray-200" disabled>
+                            <i data-feather="chevron-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-500">Horas Trabalhadas</h3>
+                        <p id="monthlyHours" class="text-3xl font-bold text-gray-900 mt-1">00:00</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-500">Horas em Tickets</h3>
+                        <p id="ticketsHours" class="text-3xl font-bold text-gray-900 mt-1">00:00</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-500">Saldo de Horas</h3>
+                        <p id="currentBalance" class="text-3xl font-bold text-gray-900 mt-1">+00:00</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-500">Produtividade (Meta 87.5%)</h3>
+                        <div class="flex items-center mt-2">
+                            <span id="productivityPercentage" class="text-2xl font-bold text-gray-900 mr-3">0%</span>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="productivityBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    
+                    <div class="lg:col-span-3 bg-white p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-lg font-medium text-gray-900 mb-1">Resumo Diário do Mês</h3>
+                        <p class="text-sm text-gray-500 mb-4">Clique em uma barra para ver os tickets do dia.</p>
+                        <div class="h-96"><canvas id="dailyHoursChart"></canvas></div>
+                    </div>
+
+                    <div class="lg:col-span-2 space-y-8">
+                        <div class="bg-white p-6 rounded-lg border border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4">Jornada vs. Tickets</h3>
+                            <div class="h-64"><canvas id="workVsTicketsChart"></canvas></div>
+                        </div>
+
+                        <div id="dailyTicketsCard" class="bg-white p-6 rounded-lg border border-gray-200 hidden">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 id="dailyTicketsTitle" class="text-lg font-medium text-gray-900">Tickets do Dia</h3>
+                                <button id="closeDailyTickets" class="p-1 rounded-full hover:bg-gray-200">
+                                    <i data-feather="x" class="w-4 h-4 text-gray-600"></i>
+                                </button>
+                            </div>
+                            <div id="dailyTicketsContent" class="overflow-y-auto max-h-60">
+                                </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg border border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">Últimos 5 Tickets do Mês</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <tbody id="recentTicketsTableBody" class="bg-white divide-y divide-gray-200">
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="./js/db.js"></script>
+    <script type="module" src="./js/reports.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+
+            const userMenuButton = document.getElementById('userMenuButton');
+            const userMenu = document.getElementById('userMenu');
+            userMenuButton.addEventListener('click', () => userMenu.classList.toggle('hidden'));
+            document.addEventListener('click', (e) => {
+                if (!userMenuButton.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
