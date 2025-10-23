@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Horas e Demandas - Registro</title>
+    <link rel="icon" type="image/png" href="image/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .vanta-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div class="vanta-bg" id="vanta-bg"></div>
+
+    <div class="w-full max-w-md px-8 py-12 bg-white rounded-2xl shadow-xl">
+        <div class="flex justify-center mb-8">
+            <div class="bg-primary-500 p-3 rounded-full">
+                <i data-feather="user-plus" class="text-white w-8 h-8"></i>
+            </div>
+        </div>
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Criar Conta</h1>
+        <p class="text-gray-600 text-center mb-8">Junte-se ao Gestão de Horas e Demandas hoje</p>
+
+        <form id="registerForm" class="space-y-4">
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
+                <input type="text" id="name" name="name" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input type="email" id="email" name="email" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                <input type="password" id="password" name="password" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div>
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirmar
+                    Senha</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div>
+                <label for="contractualWorkday" class="block text-sm font-medium text-gray-700 mb-1">Jornada de Trabalho
+                    Contratual (em horas)</label>
+                <input type="number" id="contractualWorkday" name="contractualWorkday" required min="1" max="12"
+                    step="0.5" placeholder="Ex: 8 ou 7.5"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                <p class="text-xs text-gray-500 mt-1">Este valor será a base para seu saldo de horas.</p>
+            </div>
+            <div class="flex items-center">
+                <input id="terms" name="terms" type="checkbox" required
+                    class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                <label for="terms" class="ml-2 block text-sm text-gray-700">
+                    Eu concordo com os <a href="#" class="text-primary-600 hover:text-primary-500">Termos</a> e a <a
+                        href="#" class="text-primary-600 hover:text-primary-500">Política de Privacidade</a>
+                </label>
+            </div>
+            <button type="submit"
+                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 mt-4">
+                Criar Conta
+            </button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                Já possui uma conta?
+                <a href="index.html" class="text-primary-600 hover:text-primary-500">Entrar</a>
+            </p>
+        </div>
+    </div>
+
+    <script type="module" src="./js/db.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <script>
+        VANTA.GLOBE({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x3b82f6,
+            backgroundColor: 0xf8fafc
+        });
+
+        feather.replace();
+    </script>
+</body>
+
+</html>
